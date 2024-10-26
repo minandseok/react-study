@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/mvp.css"
+    />
+  </head>
+  <style>
+    button {
+      margin: 5px;
+      width: 200px;
+    }
+  </style>
+  <body>
+    <main>
+      <div id="root"></div>
+    </main>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.25.9/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+
+    const TimeConverter = () => {
+      const [inputValue, setInputValue] = React.useState(0); // Default Value(Data Type): 0 = number, "" = string,
+      const [flipped, setFlipped] = React.useState(false); // Default Value: false = boolean
+
+      const onChange = (event) => {
+        let inputValue = event.target.value;
+        setInputValue(inputValue);
+      };
+
+      const reset = () => {
+        setInputValue(0);
+      };
+
+      const flip = () => {
+        reset();
+        setFlipped((flipped) => !flipped);
+      };
+
+      return (
+        <div className="box">
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input
+              value={flipped ? inputValue * 60 : inputValue} // get value
+              disabled={flipped}
+              onChange={onChange} // set value
+              type="number"
+              id="minutes"
+              placeholder="Minutes"
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Hours</label>
+            <input
+              value={flipped ? inputValue : Math.round(inputValue / 60)}
+              disabled={!flipped}
+              onChange={onChange}
+              type="number"
+              id="hours"
+              placeholder="Hours"
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={flip}>{flipped ? "To Minutes" : "To Hours"}</button>
+        </div>
+      );
+    };
+    const DistanceConverter = () => {
+      const [inputValue, setInputValue] = React.useState(0); // Default Value(Data Type): 0 = number, "" = string,
+      const [flipped, setFlipped] = React.useState(false); // Default Value: false = boolean
+
+      const onChange = (event) => {
+        let inputValue = event.target.value;
+        setInputValue(inputValue);
+      };
+
+      const reset = () => {
+        setInputValue(0);
+      };
+
+      const flip = () => {
+        reset();
+        setFlipped((flipped) => !flipped);
+      };
+
+      return (
+        <div className="box">
+          <div>
+            <label htmlFor="minutes">Kilometers</label>
+            <input
+              value={flipped ? Math.round(inputValue * 0.621371) : inputValue} // get value
+              disabled={flipped}
+              onChange={onChange} // set value
+              type="number"
+              id="minutes"
+              placeholder="Minutes"
+            />
+          </div>
+          <div>
+            <label htmlFor="hours">Miles</label>
+            <input
+              value={flipped ? inputValue : Math.round(inputValue * 1.60934)}
+              disabled={!flipped}
+              onChange={onChange}
+              type="number"
+              id="hours"
+              placeholder="Hours"
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={flip}>
+            {flipped ? "To Miles" : "To Kilometers"}
+          </button>
+        </div>
+      );
+    };
+
+    const App = () => {
+      const [index, setIndex] = React.useState();
+      const onSelect = (event) => {
+        let selectedValue = event.target.value;
+        setIndex(selectedValue);
+      };
+      return (
+        <div>
+          <h1>Unit Converter</h1>
+          <select
+            onChange={onSelect}
+            value={index}
+          >
+            <option
+              disabled
+              selected
+            >
+              Select
+            </option>
+            <option value="0">Time Converter</option>
+            <option value="1">Distance Converter</option>
+          </select>
+          {index === "0" ? <TimeConverter /> : null}
+          {index === "1" ? <DistanceConverter /> : null}
+        </div>
+      );
+    };
+    ReactDOM.render(<App />, root);
+  </script>
+</html>

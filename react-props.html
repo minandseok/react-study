@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/mvp.css"
+    />
+  </head>
+  <style>
+    button {
+      margin: 5px;
+      width: 200px;
+    }
+  </style>
+  <body>
+    <main>
+      <div id="root"></div>
+    </main>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.25.9/babel.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+  <script type="text/babel">
+    function Btn({ btnName, btnBgColor, onClick, fontSize = 20 }) {
+      return (
+        <button
+          onClick={onClick}
+          style={{
+            backgroundColor: btnBgColor,
+            border: "0",
+            fontSize,
+          }}
+        >
+          {btnName}
+        </button>
+      );
+    }
+    const MemorizedBtn = React.memo(Btn);
+    MemorizedBtn.propTypes = {
+      btnName: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
+    const App = () => {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => {
+        setValue("Revert Changes");
+      };
+      return (
+        <div>
+          <MemorizedBtn
+            btnName={value}
+            onClick={changeValue}
+            btnBgColor="yellow"
+          />
+          <MemorizedBtn
+            fontSize={20}
+            btnName="Apple"
+            btnBgColor="red"
+          />
+        </div>
+      );
+    };
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
